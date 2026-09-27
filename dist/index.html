@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0b1220" />
+    <meta name="description" content="Dailo helps you plan today, track real progress, and close the day with intention." />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Dailo" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="apple-touch-icon" href="icon.svg" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Dailo — Own your day</title>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#today" aria-label="Dailo home">
+          <span class="brand-mark" aria-hidden="true">D</span>
+          <span>Dailo</span>
+        </a>
+        <button class="icon-button" id="theme-toggle" aria-label="Toggle theme">
+          <span aria-hidden="true">◐</span>
+        </button>
+      </header>
+
+      <main>
+        <section class="view active" id="today-view" aria-labelledby="today-heading">
+          <div class="day-heading">
+            <div>
+              <p class="eyebrow" id="today-label">TODAY</p>
+              <h1 id="today-heading">Make today count.</h1>
+            </div>
+            <button class="avatar" id="open-settings" aria-label="Open settings">DL</button>
+          </div>
+
+          <article class="progress-card">
+            <div class="progress-copy">
+              <p class="muted">Daily progress</p>
+              <strong id="progress-message">A clear day starts here.</strong>
+              <span id="progress-detail">0 of 0 tasks complete</span>
+            </div>
+            <div class="progress-ring" id="progress-ring" style="--progress: 0">
+              <span id="progress-percent">0%</span>
+            </div>
+          </article>
+
+          <div class="section-heading">
+            <div>
+              <h2>Today</h2>
+              <span id="task-count">0 tasks</span>
+            </div>
+            <button class="text-button" id="review-button">Review day</button>
+          </div>
+
+          <div class="task-list" id="task-list" aria-live="polite"></div>
+
+          <div class="empty-state" id="empty-state">
+            <div class="empty-icon" aria-hidden="true">✓</div>
+            <h3>Your day is open</h3>
+            <p>Add one meaningful task and give your day a direction.</p>
+            <button class="primary-button" data-open-task>Add your first task</button>
+          </div>
+        </section>
+
+        <section class="view" id="history-view" aria-labelledby="history-heading">
+          <p class="eyebrow">YOUR RECORD</p>
+          <h1 id="history-heading">History</h1>
+          <p class="view-intro">A quiet record of the days you closed.</p>
+          <div class="history-list" id="history-list"></div>
+        </section>
+
+        <section class="view" id="insights-view" aria-labelledby="insights-heading">
+          <p class="eyebrow">YOUR RHYTHM</p>
+          <h1 id="insights-heading">Insights</h1>
+          <div class="insight-grid">
+            <article class="stat-card"><span>Completion rate</span><strong id="completion-rate">0%</strong><small>Last 7 closed days</small></article>
+            <article class="stat-card accent"><span>Current streak</span><strong id="current-streak">0</strong><small>Days at 70% or above</small></article>
+          </div>
+          <article class="chart-card">
+            <div class="section-heading"><div><h2>Last 7 days</h2><span>Daily completion</span></div></div>
+            <div class="week-chart" id="week-chart"></div>
+          </article>
+        </section>
+
+        <section class="view" id="settings-view" aria-labelledby="settings-heading">
+          <p class="eyebrow">MAKE IT YOURS</p>
+          <h1 id="settings-heading">Settings</h1>
+          <div class="settings-card">
+            <label class="setting-row">
+              <span><strong>Your initials</strong><small>Shown in the top corner</small></span>
+              <input id="initials-input" maxlength="3" value="DL" aria-label="Your initials" />
+            </label>
+            <label class="setting-row">
+              <span><strong>Daily review time</strong><small>Your preferred time to close the day</small></span>
+              <input id="review-time" type="time" value="21:00" aria-label="Daily review time" />
+            </label>
+          </div>
+          <div class="settings-card">
+            <button class="setting-action" id="export-data"><span><strong>Export backup</strong><small>Download all Dailo data</small></span><span>↓</span></button>
+            <label class="setting-action file-action"><span><strong>Import backup</strong><small>Restore a Dailo backup</small></span><span>↑</span><input id="import-data" type="file" accept="application/json" /></label>
+          </div>
+          <button class="danger-button" id="clear-data">Erase all data</button>
+          <p class="privacy-note">Your tasks stay on this device. Dailo does not send them anywhere.</p>
+        </section>
+      </main>
+
+      <button class="fab" data-open-task aria-label="Add a task"><span>＋</span></button>
+
+      <nav class="bottom-nav" aria-label="Main navigation">
+        <a class="nav-item active" href="#today" data-view="today"><span aria-hidden="true">●</span><small>Today</small></a>
+        <a class="nav-item" href="#history" data-view="history"><span aria-hidden="true">◷</span><small>History</small></a>
+        <a class="nav-item" href="#insights" data-view="insights"><span aria-hidden="true">▥</span><small>Insights</small></a>
+        <a class="nav-item" href="#settings" data-view="settings"><span aria-hidden="true">⚙</span><small>Settings</small></a>
+      </nav>
+    </div>
+
+    <dialog id="task-dialog">
+      <form id="task-form" method="dialog">
+        <div class="modal-handle"></div>
+        <div class="modal-header"><div><p class="eyebrow">NEW COMMITMENT</p><h2>Add a task</h2></div><button class="icon-button" type="button" data-close-dialog aria-label="Close">×</button></div>
+        <input type="hidden" id="editing-id" />
+        <label class="field"><span>Task title</span><input id="task-title" required maxlength="100" placeholder="What matters today?" /></label>
+        <label class="field"><span>Notes <small>Optional</small></span><textarea id="task-notes" maxlength="300" placeholder="Add a useful detail"></textarea></label>
+        <div class="field"><span>Track progress as</span><div class="segmented" role="radiogroup">
+          <label><input type="radio" name="progress-type" value="check" checked /><span>Check</span></label>
+          <label><input type="radio" name="progress-type" value="percent" /><span>Percent</span></label>
+          <label><input type="radio" name="progress-type" value="counter" /><span>Counter</span></label>
+        </div></div>
+        <div class="form-grid">
+          <label class="field"><span>Priority</span><select id="task-priority"><option value="normal">Normal</option><option value="high">High</option><option value="low">Low</option></select></label>
+          <label class="field"><span>Due time</span><input id="task-time" type="time" /></label>
+        </div>
+        <label class="field hidden" id="counter-goal-field"><span>Counter goal</span><input id="counter-goal" type="number" min="1" max="9999" value="10" /></label>
+        <div class="form-actions">
+          <button class="delete-task-button hidden" id="delete-task" type="button">Delete</button>
+          <button class="primary-button full" type="submit">Save task</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="review-dialog">
+      <div class="review-content">
+        <div class="modal-handle"></div>
+        <div class="modal-header"><div><p class="eyebrow">EVENING REVIEW</p><h2>Close the day</h2></div><button class="icon-button" type="button" data-close-review aria-label="Close">×</button></div>
+        <div id="review-summary" class="review-summary"></div>
+        <div id="review-tasks" class="review-tasks"></div>
+        <label class="field"><span>One thought about today <small>Optional</small></span><textarea id="day-reflection" maxlength="300" placeholder="What helped—or got in the way?"></textarea></label>
+        <button class="primary-button full" id="close-day-button">Close today</button>
+      </div>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
+
