@@ -1,0 +1,14 @@
+{
+  "name": "Dailo — Daily Progress",
+  "short_name": "Dailo",
+  "description": "Plan today, track real progress, and close the day with intention.",
+  "start_url": "./#today",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5f7fa",
+  "theme_color": "#0b1220",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
+
